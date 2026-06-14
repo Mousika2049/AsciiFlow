@@ -21,11 +21,12 @@ public class VideoPipeline : IDisposable
     private IVideoEncoder _encoder = null!;
 
     // 配置信息
-    private int _asciiWidth;
-    private int _asciiHeight;
-    private int _videoWidth;
-    private int _videoHeight;
-
+    private int _asciiWidth;      // ASCII 目标宽度（字符数，如 80）
+    private int _asciiHeight;     // ASCII 目标高度（字符数，如 40）
+    private int _videoWidth;      // 输出视频宽度（像素，= _renderer.OutputWidth，用于编码器）
+    private int _videoHeight;     // 输出视频高度（像素，= _renderer.OutputHeight，用于编码器）
+    // 注意：解码器实际宽高应该通过 _decoder.Width/Height 访问，不要用这里的变量
+    
     // 性能统计（毫秒）
     private long _decodeTimeMs;
     private long _grayscaleTimeMs;
@@ -79,8 +80,9 @@ public class VideoPipeline : IDisposable
         };
         _renderer = new SkiaCachedAsciiRenderer(config, _asciiWidth, _asciiHeight);
         _renderer.Initialize();
-        _videoWidth = _renderer.OutputWidth;
-        _videoHeight = _renderer.OutputHeight;
+        // 编码器使用的视频尺寸（来自渲染器输出）
+        _videoWidth = _renderer.OutputWidth;    // 1280
+        _videoHeight = _renderer.OutputHeight;  // 640
         Console.WriteLine($"✓ SkiaSharp 渲染器已就绪（{_videoWidth}x{_videoHeight} 像素）");
 
         // 5. 初始化 H.264 编码器
@@ -102,6 +104,15 @@ public class VideoPipeline : IDisposable
         int maxFrames = options.MaxFrames > 0
             ? options.MaxFrames
             : (int)Math.Min(_decoder.FrameCount, int.MaxValue);
+
+        // ====== [修复] 缓存解码器实际尺寸 ======
+        int srcWidth = _decoder.Width;   // 原始视频宽度（如 1280）
+        int srcHeight = _decoder.Height; // 原始视频高度（如 720）
+        Console.WriteLine($"[流水线] 解码器源尺寸: {srcWidth}x{srcHeight}");
+        Console.WriteLine($"[流水线] 渲染器输出: {_renderer.OutputWidth}x{_renderer.OutputHeight}");
+        Console.WriteLine($"[流水线] ASCII 目标: {_asciiWidth}x{_asciiHeight} 字符");
+        Console.WriteLine();
+        // ========================================
 
         var progressSw = Stopwatch.StartNew();
         int lastProgress = 0;
@@ -125,14 +136,18 @@ public class VideoPipeline : IDisposable
                 break; // 视频结束
 
             // ② RGB24 → Grayscale (~4ms, SIMD)
+            //    【修复】使用解码器的实际宽高 srcWidth/srcHeight
             sw.Restart();
-            byte[] grayFrame = _grayscaleConverter.ConvertToGrayscale(rgbFrame, _videoWidth, _videoHeight);
+            byte[] grayFrame = _grayscaleConverter.ConvertToGrayscale(rgbFrame, srcWidth, srcHeight);
             _grayscaleTimeMs += sw.ElapsedMilliseconds;
 
             // ③ Grayscale → ASCII string (~1ms, 查找表)
+            //    【修复】源尺寸是解码器尺寸 srcWidth/srcHeight
             sw.Restart();
             string asciiArt = _asciiMapper.MapToAscii(
-                grayFrame, _videoWidth, _videoHeight, _asciiWidth, _asciiHeight);
+                grayFrame,
+                srcWidth, srcHeight,                   // ← 源尺寸（解码器输出）
+                _asciiWidth, _asciiHeight);            // ← 目标字符尺寸
             _mappingTimeMs += sw.ElapsedMilliseconds;
 
             // ④ ASCII string → RGB24 image (~0.5ms, SkiaSharp+Cache)
@@ -147,7 +162,7 @@ public class VideoPipeline : IDisposable
 
             totalFrames++;
 
-            // 进度显示（每秒一次，或 --no-progress 禁用）
+            // 进度显示（每秒一次）
             if (!options.NoProgress && progressSw.ElapsedMilliseconds >= 1000)
             {
                 progressSw.Restart();
@@ -159,7 +174,6 @@ public class VideoPipeline : IDisposable
                     : 0;
                 double fps = framesThisSec;
 
-                // 进度条
                 int barWidth = 30;
                 int filled = (int)(progress / 100 * barWidth);
                 string bar = new string('█', filled) + new string('░', barWidth - filled);
@@ -172,14 +186,13 @@ public class VideoPipeline : IDisposable
         }
 
         if (!options.NoProgress)
-            Console.WriteLine(); // 换行
+            Console.WriteLine();
 
         Console.WriteLine();
         Console.WriteLine($"【处理完成】共处理 {totalFrames} 帧 (耗时 {overallSw.Elapsed.TotalSeconds:F2}s)");
 
         return totalFrames;
     }
-
     // ─────────────────────────────────────────
     // 完成编码
     // ─────────────────────────────────────────
