@@ -2,24 +2,28 @@
   "version": 3,
   "targets": {
     "net10.0": {
-      "CommandLineParser/1.9.3.15": {
+      "CommandLineParser/2.9.1": {
         "type": "package",
         "compile": {
-          "lib/CommandLine.dll": {}
-        },
-        "runtime": {
-          "lib/CommandLine.dll": {}
-        }
-      },
-      "FFmpeg.AutoGen/3.3.3.2": {
-        "type": "package",
-        "compile": {
-          "lib/netcoreapp2.0/FFmpeg.AutoGen.dll": {
+          "lib/netstandard2.0/CommandLine.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/netcoreapp2.0/FFmpeg.AutoGen.dll": {
+          "lib/netstandard2.0/CommandLine.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "FFmpeg.AutoGen/8.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.1/FFmpeg.AutoGen.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.1/FFmpeg.AutoGen.dll": {
             "related": ".xml"
           }
         }
@@ -156,7 +160,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
         "dependencies": {
-          "FFmpeg.AutoGen": "3.3.3.2",
+          "FFmpeg.AutoGen": "8.1.0",
           "SkiaSharp": "3.119.4",
           "SkiaSharp.NativeAssets.Linux": "3.119.4",
           "SkiaSharp.NativeAssets.Win32": "3.119.4",
@@ -172,37 +176,43 @@
     }
   },
   "libraries": {
-    "CommandLineParser/1.9.3.15": {
-      "sha512": "WUUHiYkqD7IBjU6Grf0y66Bgq+PWKxTHUV+2QaHMyuM0k7rot+xlT6KHcMJkPWBk8Qs/kX5sYjdcMSkCeiUMkA==",
+    "CommandLineParser/2.9.1": {
+      "sha512": "OE0sl1/sQ37bjVsPKKtwQlWDgqaxWgtme3xZz7JssWUzg5JpMIyHgCTY9MVMxOg48fJ1AgGT3tgdH5m/kQ5xhA==",
       "type": "package",
-      "path": "commandlineparser/1.9.3.15",
+      "path": "commandlineparser/2.9.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "commandlineparser.1.9.3.15.nupkg.sha512",
+        "CommandLine20.png",
+        "License.md",
+        "README.md",
+        "commandlineparser.2.9.1.nupkg.sha512",
         "commandlineparser.nuspec",
-        "lib/CommandLine.XML",
-        "lib/CommandLine.dll",
-        "readme.txt"
+        "lib/net40/CommandLine.dll",
+        "lib/net40/CommandLine.xml",
+        "lib/net45/CommandLine.dll",
+        "lib/net45/CommandLine.xml",
+        "lib/net461/CommandLine.dll",
+        "lib/net461/CommandLine.xml",
+        "lib/netstandard2.0/CommandLine.dll",
+        "lib/netstandard2.0/CommandLine.xml"
       ]
     },
-    "FFmpeg.AutoGen/3.3.3.2": {
-      "sha512": "OVUo3gKR1y8Z7RZc8MTvIXQWPvu3cPEyyRO/Gh5thg72jAXwKIuBWe0PX8Ul2XrIT0iphmHJZgUGMIGaTE+mCw==",
+    "FFmpeg.AutoGen/8.1.0": {
+      "sha512": "j7YbmE4QGst6OPk0w1D/EMBv7Ig1CoCnAVtSEYh/88q9MAVEzhu3FjgVFGYqH83jhz2opvaqZe90qG73RLMBWQ==",
       "type": "package",
-      "path": "ffmpeg.autogen/3.3.3.2",
+      "path": "ffmpeg.autogen/8.1.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "ffmpeg.autogen.3.3.3.2.nupkg.sha512",
+        "LICENSE.txt",
+        "README.md",
+        "ffmpeg.autogen.8.1.0.nupkg.sha512",
         "ffmpeg.autogen.nuspec",
-        "lib/net40/FFmpeg.AutoGen.dll",
-        "lib/net40/FFmpeg.AutoGen.xml",
-        "lib/net45/FFmpeg.AutoGen.dll",
-        "lib/net45/FFmpeg.AutoGen.xml",
-        "lib/net46/FFmpeg.AutoGen.dll",
-        "lib/net46/FFmpeg.AutoGen.xml",
-        "lib/netcoreapp2.0/FFmpeg.AutoGen.dll",
-        "lib/netcoreapp2.0/FFmpeg.AutoGen.xml"
+        "lib/netstandard2.0/FFmpeg.AutoGen.dll",
+        "lib/netstandard2.0/FFmpeg.AutoGen.xml",
+        "lib/netstandard2.1/FFmpeg.AutoGen.dll",
+        "lib/netstandard2.1/FFmpeg.AutoGen.xml"
       ]
     },
     "SkiaSharp/3.119.4": {
@@ -401,7 +411,7 @@
   "projectFileDependencyGroups": {
     "net10.0": [
       "AsciiFlow.Core >= 1.0.0",
-      "CommandLineParser >= 1.9.3.15"
+      "CommandLineParser >= 2.9.1"
     ]
   },
   "packageFolders": {
@@ -454,7 +464,7 @@
         "dependencies": {
           "CommandLineParser": {
             "target": "Package",
-            "version": "[1.9.3.15, )"
+            "version": "[2.9.1, )"
           }
         },
         "imports": [
@@ -750,17 +760,5 @@
         }
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1701",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "已使用“.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1”而不是项目目标框架“net10.0”还原包“CommandLineParser 1.9.3.15”。此包可能与项目不完全兼容。",
-      "libraryId": "CommandLineParser",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    }
-  ]
+  }
 }

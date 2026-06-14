@@ -51,7 +51,7 @@
           "dependencies": {
             "CommandLineParser": {
               "target": "Package",
-              "version": "[1.9.3.15, )"
+              "version": "[2.9.1, )"
             }
           },
           "imports": [
@@ -391,7 +391,7 @@
           "dependencies": {
             "FFmpeg.AutoGen": {
               "target": "Package",
-              "version": "[3.3.3.2, )"
+              "version": "[8.1.0, )"
             },
             "SkiaSharp": {
               "target": "Package",

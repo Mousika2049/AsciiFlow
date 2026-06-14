@@ -47,7 +47,7 @@
           "dependencies": {
             "FFmpeg.AutoGen": {
               "target": "Package",
-              "version": "[3.3.3.2, )"
+              "version": "[8.1.0, )"
             },
             "SkiaSharp": {
               "target": "Package",
