@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AsciiFlow.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a56f88a39093e66b2bfd71550626dd35c75c4d60")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+14645cce9015ac515ad76a216887342a58ce6bfd")]
 [assembly: System.Reflection.AssemblyProductAttribute("AsciiFlow.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AsciiFlow.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
