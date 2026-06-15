@@ -34,7 +34,7 @@ public unsafe class FFmpegVideoEncoder : IVideoEncoder
 
     // FFmpeg 错误码常量
     private const int AVERROR_EAGAIN = -11;
-    private const int AVERROR_EOF = unchecked((int)0x20464F45);  // ← 新增
+    private static readonly int AVERROR_EOF = ffmpeg.AVERROR_EOF;
     private const int AV_TIME_BASE = 1000000;
 
     // 编码器配置
